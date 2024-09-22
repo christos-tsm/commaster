@@ -10,56 +10,67 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: user.name,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        tel: user.tel,
+        website: user.website,
         email: user.email,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
         patch(route('profile.update'));
     };
 
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Profile Information</h2>
-
-                <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
-                </p>
+                <h2 className="text-lg font-medium text-gray-900">Πληροφορίες</h2>
             </header>
 
-            <form onSubmit={submit} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
-
-                    <TextInput
-                        id="name"
-                        className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                        isFocused
-                        autoComplete="name"
-                    />
-
-                    <InputError className="mt-2" message={errors.name} />
+            <form onSubmit={submit} className='flex flex-col gap-6 mt-6'>
+                <div className="flex gap-4">
+                    <div className='flex flex-col gap-1 flex-1'>
+                        <InputLabel htmlFor="first_name" value="Όνομα" />
+                        <TextInput
+                            id="first_name"
+                            name="first_name"
+                            value={data.first_name}
+                            className="w-full"
+                            autoComplete="name"
+                            isFocused={true}
+                            onChange={(e) => setData('first_name', e.target.value)}
+                            required
+                        />
+                        <InputError message={errors.first_name} className="mt-2" />
+                    </div>
+                    <div className='flex flex-col gap-1 flex-1'>
+                        <InputLabel htmlFor="last_name" value="Επίθετο" />
+                        <TextInput
+                            id="last_name"
+                            name="last_name"
+                            value={data.last_name}
+                            className="w-full"
+                            autoComplete="name"
+                            isFocused={true}
+                            onChange={(e) => setData('last_name', e.target.value)}
+                            required
+                        />
+                        <InputError message={errors.last_name} className="mt-2" />
+                    </div>
                 </div>
 
-                <div>
+                <div className='flex flex-col gap-1'>
                     <InputLabel htmlFor="email" value="Email" />
-
                     <TextInput
                         id="email"
                         type="email"
-                        className="mt-1 block w-full"
+                        className="w-full"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
                         autoComplete="username"
                     />
-
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
@@ -87,7 +98,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
                     <Transition
                         show={recentlySuccessful}
                         enter="transition ease-in-out"
