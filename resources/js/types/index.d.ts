@@ -2,7 +2,12 @@ import { Config } from 'ziggy-js';
 
 export interface User {
     id: number;
-    name: string;
+    first_name: string;
+    last_name: string;
+    website?: string;
+    woocommerce_consumer_key?: string;
+    woocommerce_consumer_secret?: string;
+    tel?: string;
     email: string;
     email_verified_at?: string;
 }
