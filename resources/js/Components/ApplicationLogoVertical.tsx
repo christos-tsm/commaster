@@ -2,9 +2,9 @@ import { SVGAttributes } from 'react';
 
 export default function ApplicationLogo(props: SVGAttributes<SVGElement>) {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="406.849" height="72.148" viewBox="0 0 406.849 72.148" {...props}>
-            <g id="Group_89" data-name="Group 89" transform="translate(7020.892 2084)">
-                <g id="Group_88" data-name="Group 88" transform="translate(-7074.633 -2120.107)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="335.469" height="147.148" viewBox="0 0 335.469 147.148" {...props}>
+            <g id="Group_90" data-name="Group 90" transform="translate(7109 2084)">
+                <g id="Group_88" data-name="Group 88" transform="translate(-7234.121 -2045.107)">
                     <g id="Group_86" data-name="Group 86">
                         <path id="Path_34" data-name="Path 34" d="M125.121,90.254l4.1-9.361a27.376,27.376,0,0,0,13.609,3.6c4.609,0,6.121-1.008,6.121-2.664,0-5.256-23.042.72-23.042-14.9,0-7.345,6.769-12.961,19.009-12.961,5.473,0,11.521,1.152,15.41,3.312l-4.1,9.289a22.875,22.875,0,0,0-11.233-2.881c-4.609,0-6.265,1.3-6.265,2.737,0,5.4,22.97-.432,22.97,15.049,0,7.2-6.625,12.817-19.3,12.817C135.778,94.286,128.937,92.63,125.121,90.254Z" fill="#23216e" />
                         <path id="Path_35" data-name="Path 35" d="M208,54.611l-16.85,40.611c-4.1,10.081-9.865,13.033-17.569,13.033-4.1,0-8.713-1.368-11.305-3.528l4.752-9.577a9.3,9.3,0,0,0,6.049,2.3,5.278,5.278,0,0,0,5.328-3.312L161.7,54.611h14.041l9.577,23.834,9.648-23.834Z" fill="#23216e" />
@@ -19,7 +19,7 @@ export default function ApplicationLogo(props: SVGAttributes<SVGElement>) {
                         <path id="Path_42" data-name="Path 42" d="M460.374,77.942H432c1.153,3.961,4.537,6.265,9.578,6.265a12.506,12.506,0,0,0,9-3.384l7.2,7.489c-3.744,4.176-9.217,6.336-16.634,6.336-13.9,0-22.9-8.569-22.9-20.234,0-11.737,9.145-20.089,21.458-20.089,11.521,0,20.882,7.344,20.882,20.233C460.59,75.566,460.446,76.862,460.374,77.942Zm-28.586-7.2h15.985a8.118,8.118,0,0,0-15.985,0Z" fill="#45d2b0" />
                     </g>
                 </g>
-                <g id="logoipsum-254" transform="translate(-7020.892 -2078)">
+                <g id="logoipsum-254" transform="translate(-6974 -2084)">
                     <path id="Path_28" data-name="Path 28" d="M32.892,0A32.892,32.892,0,0,0,0,32.892,32.892,32.892,0,0,0,32.892,0Z" transform="translate(0)" fill="#45d2b0" />
                     <path id="Path_29" data-name="Path 29" d="M20,52.892A32.892,32.892,0,0,0,52.892,20,32.892,32.892,0,0,0,20,52.892Z" transform="translate(12.892 12.892)" fill="#45d2b0" />
                     <path id="Path_30" data-name="Path 30" d="M20,0A32.892,32.892,0,0,1,52.892,32.892,32.892,32.892,0,0,1,20,0Z" transform="translate(12.892)" fill="#23216e" />
@@ -27,5 +27,6 @@ export default function ApplicationLogo(props: SVGAttributes<SVGElement>) {
                 </g>
             </g>
         </svg>
+
     );
 }

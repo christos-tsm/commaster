@@ -13,8 +13,14 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Geologica', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                black: '#1b263b',
+                'theme-primary': '#23216E',
+                'theme-primary-darken': '#1D1B58',
+                'theme-secondary': '#45D2B0',
+            }
         },
     },
 
