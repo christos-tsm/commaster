@@ -12,7 +12,7 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
 
     return (
         <div className="min-h-screen bg-gray-100 flex">
-            <nav className="bg-white border-b border-gray-100 min-w-[250px] flex flex-col">
+            <nav className="bg-white border-b border-gray-100 min-w-[150px] flex flex-col">
                 <Link href={route('dashboard')} className="flex px-2 py-4">
                     <ApplicationLogo className="w-[150px] h-auto" />
                 </Link>

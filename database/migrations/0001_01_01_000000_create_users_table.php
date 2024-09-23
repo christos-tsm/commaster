@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->string('last_name');
             $table->string('tel')->nullable();
             $table->string('website_url')->nullable();
-            $table->string('woocommerce_consumer_key')->nullable();
-            $table->string('woocommerce_consumer_secret')->nullable();
+            $table->string('woocommerce_consumer_key', 1024)->nullable();
+            $table->string('woocommerce_consumer_secret', 1024)->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

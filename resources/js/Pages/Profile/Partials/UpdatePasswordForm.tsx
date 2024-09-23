@@ -39,16 +39,16 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Update Password</h2>
+                <h2 className="text-lg font-medium text-gray-900">Αλλαγή κωδικού</h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Ensure your account is using a long, random password to stay secure.
+                    Βεβαιωθείτε ότι ο λογαριασμός σας χρησιμοποιεί έναν μακρύ, τυχαίο κωδικό πρόσβασης για να παραμείνετε ασφαλείς.
                 </p>
             </header>
 
-            <form onSubmit={updatePassword} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel htmlFor="current_password" value="Current Password" />
+            <form onSubmit={updatePassword} className="flex flex-col gap-6 mt-6">
+                <div className='flex flex-col gap-1'>
+                    <InputLabel htmlFor="current_password" value="Τρέχων κωδικός" />
 
                     <TextInput
                         id="current_password"
@@ -56,38 +56,37 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                         value={data.current_password}
                         onChange={(e) => setData('current_password', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full"
+                        className="w-full"
                         autoComplete="current-password"
                     />
 
                     <InputError message={errors.current_password} className="mt-2" />
                 </div>
 
-                <div>
-                    <InputLabel htmlFor="password" value="New Password" />
-
+                <div className="flex flex-col gap-1">
+                    <InputLabel htmlFor="password" value="Νέος κωδικός" />
                     <TextInput
                         id="password"
                         ref={passwordInput}
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full"
+                        className="w-full"
                         autoComplete="new-password"
                     />
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div>
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                <div className="flex flex-col gap-1">
+                    <InputLabel htmlFor="password_confirmation" value="Επιβεβαίωση κωδικού" />
 
                     <TextInput
                         id="password_confirmation"
                         value={data.password_confirmation}
                         onChange={(e) => setData('password_confirmation', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full"
+                        className="w-full"
                         autoComplete="new-password"
                     />
 
@@ -95,7 +94,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing}>Αποθηκευση</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -104,7 +103,7 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                        <p className="text-sm text-gray-600">Ο κωδικός σας ανανεώθηκε</p>
                     </Transition>
                 </div>
             </form>

@@ -13,7 +13,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         first_name: user.first_name,
         last_name: user.last_name,
         tel: user.tel,
-        website: user.website,
         email: user.email,
     });
 
@@ -25,7 +24,10 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Πληροφορίες</h2>
+                <h2 className="text-lg font-medium text-gray-900">Πληροφορίες λογαριασμού</h2>
+                <p className="mt-1 text-sm text-gray-600">
+                    Επεξεργασία των στοιχείων λογαριασμού.
+                </p>
             </header>
 
             <form onSubmit={submit} className='flex flex-col gap-6 mt-6'>
@@ -59,21 +61,34 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         <InputError message={errors.last_name} className="mt-2" />
                     </div>
                 </div>
-
-                <div className='flex flex-col gap-1'>
-                    <InputLabel htmlFor="email" value="Email" />
-                    <TextInput
-                        id="email"
-                        type="email"
-                        className="w-full"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                        autoComplete="username"
-                    />
-                    <InputError className="mt-2" message={errors.email} />
+                <div className="flex gap-4">
+                    <div className='flex flex-col gap-1 flex-1'>
+                        <InputLabel htmlFor="email" value="Email" />
+                        <TextInput
+                            id="email"
+                            type="email"
+                            className="w-full"
+                            value={data.email}
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                            autoComplete="username"
+                        />
+                        <InputError className="mt-2" message={errors.email} />
+                    </div>
+                    <div className='flex flex-col gap-1 flex-1'>
+                        <InputLabel htmlFor="tel" value="Τηλέφωνο" />
+                        <TextInput
+                            id="tel"
+                            type="tel"
+                            className="w-full"
+                            value={data.tel}
+                            onChange={(e) => setData('tel', e.target.value)}
+                            required
+                            autoComplete="phone"
+                        />
+                        <InputError className="mt-2" message={errors.tel} />
+                    </div>
                 </div>
-
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="text-sm mt-2 text-gray-800">
@@ -84,20 +99,20 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                                 as="button"
                                 className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                Click here to re-send the verification email.
+                                Πατήστε εδώ για να αποστείλουμε ξανά το email.
                             </Link>
                         </p>
 
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 font-medium text-sm text-green-600">
-                                A new verification link has been sent to your email address.
+                                Ένας νέος σύνδεσμος στάλθηκε στο email σας.
                             </div>
                         )}
                     </div>
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing}>Αποθήκευση</PrimaryButton>
                     <Transition
                         show={recentlySuccessful}
                         enter="transition ease-in-out"
@@ -105,7 +120,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                        <p className="text-sm text-gray-600">Οι αλλαγές αποθηκεύτηκαν.</p>
                     </Transition>
                 </div>
             </form>

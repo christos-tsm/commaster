@@ -4,7 +4,7 @@ export interface User {
     id: number;
     first_name: string;
     last_name: string;
-    website?: string;
+    website_url?: string;
     woocommerce_consumer_key?: string;
     woocommerce_consumer_secret?: string;
     tel?: string;
