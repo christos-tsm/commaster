@@ -7,6 +7,8 @@ export interface User {
     website_url?: string;
     woocommerce_consumer_key?: string;
     woocommerce_consumer_secret?: string;
+    masked_woocommerce_consumer_key?: string;
+    masked_woocommerce_consumer_secret?: string;
     tel?: string;
     email: string;
     email_verified_at?: string;

@@ -28,35 +28,33 @@ class User extends Authenticatable {
         'woocommerce_consumer_secret',
     ];
 
-    protected function casts(): array {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-    // Accessor to return masked woocommerce_consumer_key
-    public function getWoocommerceConsumerKeyAttribute($value) {
-        if (empty($value)) {
+    // Accessor to return masked woocommerce_consumer_key when accessed for display
+    public function getMaskedWoocommerceConsumerKeyAttribute() {
+        if (empty($this->woocommerce_consumer_key)) {
             return ''; // Return empty if not set
         }
 
         try {
-            $decryptedValue = Crypt::decryptString($value);
+            $decryptedValue = Crypt::decryptString($this->woocommerce_consumer_key);
             return $this->maskKey($decryptedValue);
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             return ''; // If decryption fails, return empty string
         }
     }
 
-    // Accessor to return masked woocommerce_consumer_secret
-    public function getWoocommerceConsumerSecretAttribute($value) {
-        if (empty($value)) {
+    // Accessor to return masked woocommerce_consumer_secret for display
+    public function getMaskedWoocommerceConsumerSecretAttribute() {
+        if (empty($this->woocommerce_consumer_secret)) {
             return ''; // Return empty if not set
         }
 
         try {
-            $decryptedValue = Crypt::decryptString($value);
+            $decryptedValue = Crypt::decryptString($this->woocommerce_consumer_secret);
             return $this->maskKey($decryptedValue);
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             return ''; // If decryption fails, return empty string

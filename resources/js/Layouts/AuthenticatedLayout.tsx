@@ -24,7 +24,7 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink href={route('dashboard')} active={route().current('orders')}>
+                        <NavLink href={route('orders')} active={route().current('orders')}>
                             <ListOrdered strokeWidth={1.2} />
                             Παραγγελίες
                         </NavLink>

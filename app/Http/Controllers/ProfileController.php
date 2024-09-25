@@ -28,8 +28,8 @@ class ProfileController extends Controller {
                     'email' => $user->email,
                     'tel' => $user->tel,
                     'website_url' => $user->website_url,
-                    'woocommerce_consumer_key' => $user->woocommerce_consumer_key, // Masked
-                    'woocommerce_consumer_secret' => $user->woocommerce_consumer_secret, // Masked
+                    'masked_woocommerce_consumer_key' => $user->masked_woocommerce_consumer_key, // New masked keys
+                    'masked_woocommerce_consumer_secret' => $user->masked_woocommerce_consumer_secret,
                     'created_at' => $user->created_at,
                     'updated_at' => $user->updated_at,
                 ],

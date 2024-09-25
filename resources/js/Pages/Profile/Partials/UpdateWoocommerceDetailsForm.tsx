@@ -14,8 +14,8 @@ export default function UpdateWoocommerceDetailsForm({ className = '' }: { class
 
     const { data, setData, errors, put, processing, recentlySuccessful } = useForm({
         website_url: user.website_url ?? '',
-        woocommerce_consumer_key: user.woocommerce_consumer_key ?? '',
-        woocommerce_consumer_secret: user.woocommerce_consumer_secret ?? '',
+        woocommerce_consumer_key: '', // Start empty for editing
+        woocommerce_consumer_secret: '', // Start empty for editing
     });
 
     const updateWoocommerceDetails: FormEventHandler = (e) => {
@@ -37,13 +37,16 @@ export default function UpdateWoocommerceDetailsForm({ className = '' }: { class
                 <h2 className="text-lg font-medium text-gray-900">Σύνδεση στο Woocommerce</h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    <Link className="font-bold text-theme-secondary" href='#!'>Εδω</Link> θα βρείτε τον οδηγό για να συνδέσετε το κατάστημα σας με την εφαρμογή μας. <br />
+                    <Link className="font-bold text-theme-secondary" href='#!'>
+                        Εδω
+                    </Link>{' '}
+                    θα βρείτε τον οδηγό για να συνδέσετε το κατάστημα σας με την εφαρμογή μας. <br />
                     Βεβαιωθείτε ότι το e-shop σας χρησιμοποιεί το SSL /TLS πρωτόκολλο (https).
                 </p>
             </header>
 
             <form onSubmit={updateWoocommerceDetails} className="flex flex-col gap-6 mt-6">
-                <div className='flex flex-col gap-1'>
+                <div className="flex flex-col gap-1">
                     <InputLabel htmlFor="website_url" value="URL του e-shop σας" />
                     <TextInput
                         id="website_url"
@@ -55,25 +58,27 @@ export default function UpdateWoocommerceDetailsForm({ className = '' }: { class
                     />
                     <InputError message={errors.website_url} className="mt-2" />
                 </div>
-                <div className='flex flex-col gap-1'>
+                <div className="flex flex-col gap-1">
                     <InputLabel htmlFor="woocommerce_consumer_key" value="Consumer Key" />
                     <TextInput
                         id="woocommerce_consumer_key"
                         ref={consumerKeyInput}
-                        value={data.woocommerce_consumer_key} // Reactively update the value from useForm
-                        onChange={(e) => setData('woocommerce_consumer_key', e.target.value)} // Update the form data
+                        placeholder={user.masked_woocommerce_consumer_key} // Show masked key if available
+                        value={data.woocommerce_consumer_key} // Use the reactive form data
+                        onChange={(e) => setData('woocommerce_consumer_key', e.target.value)} // Update form data
                         type="text"
                         className="w-full"
                     />
                     <InputError message={errors.woocommerce_consumer_key} className="mt-2" />
                 </div>
-                <div className='flex flex-col gap-1'>
+                <div className="flex flex-col gap-1">
                     <InputLabel htmlFor="woocommerce_consumer_secret" value="Consumer Secret Key" />
                     <TextInput
                         id="woocommerce_consumer_secret"
                         ref={consumerSecretInput}
-                        value={data.woocommerce_consumer_secret} // Reactively update the value from useForm
-                        onChange={(e) => setData('woocommerce_consumer_secret', e.target.value)} // Update the form data
+                        placeholder={user.masked_woocommerce_consumer_secret} // Show masked secret if available
+                        value={data.woocommerce_consumer_secret} // Use the reactive form data
+                        onChange={(e) => setData('woocommerce_consumer_secret', e.target.value)} // Update form data
                         type="text"
                         className="w-full"
                     />
