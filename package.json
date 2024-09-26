@@ -24,6 +24,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@tanstack/react-query": "^5.56.2",
+        "@tanstack/react-query-devtools": "^5.58.0",
         "lucide-react": "^0.445.0"
     }
 }

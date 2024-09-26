@@ -26,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('/woocommerce-details', [WoocommerceController::class, 'updateWoocommerceDetails'])->name('woocommerce.update');
     Route::get('/orders', [WoocommerceOrdersController::class, 'index'])->name('orders');
+    // Route to fetch orders 
+    Route::get('/fetch-orders', [WoocommerceOrdersController::class, 'fetchOrders'])->name('orders.fetch');
 });
 
 require __DIR__ . '/auth.php';

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\WooCommerceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -48,5 +49,42 @@ class WoocommerceOrdersController extends Controller {
         return Inertia::render('Woocommerce/Orders', [
             'orders' => $orders
         ]);
+    }
+
+    public function fetchOrders(Request $request) {
+        $user = Auth::user();
+        $storeUrl = $user->website_url;
+
+        // Decrypt consumer key and consumer secret
+        try {
+            $consumerKey = Crypt::decryptString($user->woocommerce_consumer_key);
+            $consumerSecret = Crypt::decryptString($user->woocommerce_consumer_secret);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['error' => 'Failed to decrypt WooCommerce API keys'], 403);
+        }
+
+        // Fetch orders from WooCommerce API
+        $woocommerce = new \Automattic\WooCommerce\Client(
+            $storeUrl,
+            $consumerKey,
+            $consumerSecret,
+            [
+                'version' => 'wc/v3',
+            ]
+        );
+
+        // Handle pagination if needed
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 10);
+
+        try {
+            $orders = $woocommerce->get('orders', [
+                'page' => $page,
+                'per_page' => $perPage,
+            ]);
+            return response()->json($orders);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch orders from WooCommerce'], 500);
+        }
     }
 }
