@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Order } from '@/types/woocommerce';
 
 const fetchOrders = async (page: number) => {
-    const { data } = await axios.get(`/fetch-orders?page=${page}`);  // Change to `/fetch-orders`
+    const { data } = await axios.get(`/fetch-orders?page=${page}`);
     return data;
 };
 
@@ -13,5 +13,6 @@ export const useOrders = (page: number) => {
         queryFn: () => fetchOrders(page),  // The function that fetches the data
         placeholderData: [],  // If no data yet, return an empty array
         staleTime: 5000,
+        refetchOnWindowFocus: false
     });
 };

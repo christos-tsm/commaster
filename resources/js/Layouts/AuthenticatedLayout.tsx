@@ -1,3 +1,4 @@
+import 'react-loading-skeleton/dist/skeleton.css'
 import { useState, PropsWithChildren, ReactNode } from 'react';
 import { ChevronDown, LayoutDashboard, ListOrdered, PackageSearch, Power, UserPen } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';

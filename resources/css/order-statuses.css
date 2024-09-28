@@ -1,0 +1,30 @@
+.order-status {
+    @apply font-normal;
+}
+
+.order-status.processing {
+    @apply bg-theme-secondary text-white;
+}
+
+.order-status.on-hold {
+    @apply bg-[#f8dda7] text-[#573b00];
+}
+
+.order-status.completed {
+    @apply bg-theme-primary text-white;
+}
+
+.order-status.cancelled,
+.order-status.failed {
+    @apply bg-[#eba3a3] text-[#570000];
+}
+
+.order-status.trash {
+    @apply bg-[#eba3a3] text-[#550202];
+}
+
+
+.order-status.refunded,
+.order-status.pending {
+    @apply bg-theme-primary/10 text-theme-primary
+}

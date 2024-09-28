@@ -75,14 +75,23 @@ class WoocommerceOrdersController extends Controller {
 
         // Handle pagination if needed
         $page = $request->query('page', 1);
-        $perPage = $request->query('per_page', 10);
+        $perPage = $request->query('per_page', 20);
 
         try {
             $orders = $woocommerce->get('orders', [
                 'page' => $page,
                 'per_page' => $perPage,
             ]);
-            return response()->json($orders);
+            // Get total number of pages from WooCommerce API response headers
+            $totalOrders = $woocommerce->http->getResponse()->getHeaders()['X-WP-Total'][0];
+            $totalPages = $woocommerce->http->getResponse()->getHeaders()['X-WP-TotalPages'][0];
+
+            return response()->json([
+                'orders' => $orders,
+                'current_page' => $page,
+                'total_pages' => (int) $totalPages,
+                'total_orders' => (int) $totalOrders,
+            ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to fetch orders from WooCommerce'], 500);
         }

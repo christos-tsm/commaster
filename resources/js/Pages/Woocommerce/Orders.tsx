@@ -5,6 +5,7 @@ import { WooCommerceOrdersResponse } from '@/types/woocommerce';
 import OrdersList from '@/Components/Woocommerce/Orders/OrdersList';
 import { useState } from 'react';
 import { useOrders } from '@/hooks/useOrders';
+import Skeleton from 'react-loading-skeleton';
 
 interface OrdersPageProps {
     orders: WooCommerceOrdersResponse;
@@ -12,20 +13,41 @@ interface OrdersPageProps {
 
 export default function Orders() {
     const [page, setPage] = useState(1);
-    const { data: orders, isError, isLoading, error, isFetching } = useOrders(page);
+    const { data, isError, isLoading, error, isFetching, isPending } = useOrders(page);
     const user = usePage().props.auth.user;
+    console.log(data);
 
-    // if (isLoading) return <p>Loading...</p>;
-    // if (isError) return <Message message={error.message} type="error" />;
-    console.log(orders);
+    if (isLoading || isFetching) {
+        return (
+            <AuthenticatedLayout>
+                <Head title="Παραγγελίες" />
+                <div className="m-10">
+                    <Skeleton count={10} height={30} />
+                </div>
+            </AuthenticatedLayout>
+        )
+    }
+
     return (
         <AuthenticatedLayout>
             <Head title="Παραγγελίες" />
             <div className="m-10">
                 {/* @ts-ignore */}
-                {isLoading ? <p>Loading...</p> : null}
                 {isError && error ? <Message message={error.message} type="error" /> : null}
-                <OrdersList orders={orders} user={user} />
+                <OrdersList orders={data.orders} user={user} />
+                {data.total_pages > 1 ? (
+                    <div className='flex gap-2 mt-10'>
+                        {Array.from({ length: data.total_pages }, (_, i) => (
+                            <button
+                                key={i}
+                                className={`w-7 h-7 text-xs duration-150 rounded-md ${page === i + 1 ? 'bg-theme-primary text-white' : 'bg-white hover:bg-theme-primary/80 hover:text-white'}`}
+                                onClick={() => setPage(i + 1)}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
+                ) : null}
             </div>
         </AuthenticatedLayout>
     );

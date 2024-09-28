@@ -1,6 +1,11 @@
+@import './order-statuses.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    @apply selection:bg-theme-secondary selection:text-white;
+}
 
 a,
 [type="checkbox"],
