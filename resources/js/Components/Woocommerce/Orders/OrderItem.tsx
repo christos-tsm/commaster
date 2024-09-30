@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
+import { format } from 'date-fns';
 import { ArrowDownFromLine, ArrowUpFromLine, Eye } from 'lucide-react';
-import { Order } from '@/types/woocommerce'
 import OrderItemDetails from './OrderItemDetails';
+import { Order } from '@/types/woocommerce'
 import { ORDER_STATUSES } from '@/helpers/order-statuses';
-import moment from 'moment';
 
 interface OrderItemInterface {
     order: Order;
@@ -13,7 +13,7 @@ interface OrderItemInterface {
 const OrderItem: React.FC<OrderItemInterface> = ({ order, website_url }) => {
     const [detailsOpen, setDetailsOpen] = useState(false);
     const readableOrderStatus = ORDER_STATUSES[order.status];
-    const formattedDate = moment(order.date_created).format('DD/MM/YYYY HH:mm:ss');
+    const formattedDate = format(new Date(order.date_created), 'dd/MM/yyyy HH:mm:ss');
     return (
         <div data-order={order.id} className={`grid md:grid-cols-6 gap-x-4 duration-300 text-sm border border-gray-200 bg-white even:bg-theme-primary/5 hover:border-theme-primary `} >
             <div className='text-sm font-medium p-4'>
