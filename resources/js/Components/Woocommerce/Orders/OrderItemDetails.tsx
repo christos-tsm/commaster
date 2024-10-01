@@ -9,7 +9,7 @@ interface OrderItemDetailsProps {
 
 const OrderItemDetails: React.FC<OrderItemDetailsProps> = ({ item, currency, customer_note }) => {
     return (
-        <div className='grid grid-cols-3 odd:bg-gray-100 p-4 rounded-md gap-x-4'>
+        <div className='grid grid-cols-3 bg-white odd:bg-gray-100 p-4 rounded-md gap-x-4'>
             <div className='flex gap-2 items-start'>
                 {item.image && <img src={item.image.src} alt={item.name} width={40} height={40} className='border border-theme-primary/70 object-contain mix-blend-darken' />}
                 <div className='flex flex-col gap-1'>

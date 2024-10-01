@@ -39,5 +39,15 @@ class WooCommerceService {
         }
     }
 
-    // Add more WooCommerce-related methods as needed, like getProducts(), getOrders(), etc.
+    public function getOrder($id) {
+        if (!$this->woocommerce) {
+            throw new \Exception('WooCommerce client not initialized.');
+        }
+
+        try {
+            return $this->woocommerce->get('/orders/' . $id);
+        } catch (HttpClientException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
 }

@@ -123,4 +123,40 @@ class WoocommerceOrdersController extends Controller {
             return response()->json(['error' => 'Failed to fetch orders from WooCommerce'], 500);
         }
     }
+
+    public function show(Request $request, $id) {
+        $user = $request->user();
+        $storeUrl = $user->website_url;
+
+        // Check if the keys are present
+        $encryptedConsumerKey = $user->getAttributes()['woocommerce_consumer_key'] ?? null;
+        $encryptedConsumerSecret = $user->getAttributes()['woocommerce_consumer_secret'] ?? null;
+
+        if (!$encryptedConsumerKey || !$encryptedConsumerSecret) {
+            return back()->withErrors(['error' => 'WooCommerce API keys are missing. Please update them in your settings page.']);
+        }
+
+        // Decrypt consumer key and consumer secret
+        try {
+            $consumerKey = Crypt::decryptString($encryptedConsumerKey);
+            $consumerSecret = Crypt::decryptString($encryptedConsumerSecret);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            Log::error('Decryption failed for user: ' . $user->id);
+            return back()->withErrors(['error' => 'Failed to decrypt WooCommerce API keys.']);
+        }
+
+        try {
+            // Fetch the order by ID using the WooCommerce client
+            $order = $this->woocommerceService
+                ->setClient($storeUrl, $consumerKey, $consumerSecret)
+                ->getOrder($id);
+
+            return Inertia::render('Woocommerce/SingleOrder', [
+                'order' => $order
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch order: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Failed to fetch order from WooCommerce.']);
+        }
+    }
 }

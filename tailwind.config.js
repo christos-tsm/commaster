@@ -20,6 +20,7 @@ export default {
                 'theme-primary': '#23216E',
                 'theme-primary-darken': '#1D1B58',
                 'theme-secondary': '#45D2B0',
+                'theme-secondary-darken': '#3BBF9B',
             }
         },
     },
