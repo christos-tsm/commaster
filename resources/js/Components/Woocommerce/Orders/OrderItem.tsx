@@ -60,7 +60,7 @@ const OrderItem: React.FC<OrderItemInterface> = ({ order, website_url }) => {
                                 <li><strong>Διεύθυνση:</strong> {order.shipping.address_1 ? order.shipping.address_1 + ' - ' : '-'} {order.shipping.city ? order.shipping.city + ' - ' : ''} {order.shipping.postcode ? order.shipping.postcode + ' - ' : ''} {order.shipping.country ? <small>{order.shipping.country}</small> : ''}</li>
                                 {order.shipping.address_2 && <li><strong>Διεύθυνση 2:</strong> {order.shipping.address_2}</li>}
                                 {order.shipping.company && <li><strong>Εταιρεία:</strong> {order.shipping.company}</li>}
-                                <li><strong>Όνομα:</strong> {order.shipping.first_name} {order.shipping.last_name}</li>
+                                <li><strong>Όνομα:</strong> {order.shipping.first_name && order.shipping.last_name ? order.shipping.first_name + ' ' + order.shipping.last_name : '-'}</li>
                                 <li><strong>Τηλέφωνο:</strong> {order.shipping.phone ? order.shipping.phone : '-'}</li>
                             </ul>
                         </div>

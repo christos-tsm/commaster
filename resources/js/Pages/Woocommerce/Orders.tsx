@@ -1,7 +1,7 @@
 // Orders.jsx
 
 import "react-datepicker/dist/react-datepicker.css";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import DatePicker from 'react-datepicker';
 import { registerLocale } from "react-datepicker";
@@ -70,6 +70,17 @@ export default function Orders() {
         });
     };
 
+    const handleClearFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setFilters({
+            status: 'all',
+            startDate: null,
+            endDate: null,
+        })
+        setStatus('all');
+        setDateRange([null, null]);
+    }
+
     return (
         <AuthenticatedLayout>
             <Head title="Παραγγελίες" />
@@ -94,6 +105,7 @@ export default function Orders() {
                         <label htmlFor="date-from" className='text-sm'>Εύρος Ημερομηνιών</label>
                         <DatePicker
                             className="w-full"
+                            id="date-from"
                             dateFormat="dd/MM/yyyy"
                             locale="el"
                             selectsRange={true}
@@ -105,13 +117,22 @@ export default function Orders() {
                             withPortal
                         />
                     </div>
-                    <div>
+                    <div className="flex gap-2">
                         <button
                             onClick={handleApplyFilters}
                             className="bg-theme-secondary text-white text-sm px-4 py-0 h-[38px] inline-flex items-center rounded-md"
                         >
                             Εφαρμογή
                         </button>
+                        {status !== 'all' || dateRange[0] && dateRange[1] ?
+                            <button
+                                onClick={handleClearFilters}
+                                className="bg-gray-200 text-theme-primary text-sm px-4 py-0 h-[38px] inline-flex items-center rounded-md"
+                            >
+                                Εκκαθάριση
+                            </button>
+                            : null
+                        }
                     </div>
                 </div>
                 {isError && error ? <Message message={error.message} type="error" /> : null}

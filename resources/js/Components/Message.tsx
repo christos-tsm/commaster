@@ -15,7 +15,7 @@ const Message: React.FC<IMessage> = ({ message, type }) => {
             classes += ' bg-green-400 text-green-100';
             break;
         case 'info':
-            classes += ' bg-blue-400 text-blue-100';
+            classes += ' bg-theme-secondary text-white';
             break;
         default:
             classes += ' bg-gray-400 text-white';
