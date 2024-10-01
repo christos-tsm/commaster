@@ -1,29 +1,41 @@
+// Orders.jsx
+
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import DatePicker from 'react-datepicker';
-import { registerLocale, setDefaultLocale } from "react-datepicker";
+import { registerLocale } from "react-datepicker";
 import { el } from 'date-fns/locale/el';
 import { Head, usePage } from '@inertiajs/react';
 import Message from '@/Components/Message';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { WooCommerceOrdersResponse } from '@/types/woocommerce';
 import OrdersList from '@/Components/Woocommerce/Orders/OrdersList';
 import { useOrders } from '@/hooks/useOrders';
 import { ORDER_STATUSES } from '@/helpers/order-statuses';
 
-interface OrdersPageProps {
-    orders: WooCommerceOrdersResponse;
-}
-
 export default function Orders() {
-    registerLocale('el', el)
+    registerLocale('el', el);
+    const props = usePage().props;
+    const serverError = props.error || null;
     const [page, setPage] = useState(1);
-    const { data, isError, isLoading, error, isFetching, isPending } = useOrders(page);
+
+    // New state variables for filters
+    const [status, setStatus] = useState('all');
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
     const [startDate, endDate] = dateRange;
+    const [filters, setFilters] = useState({
+        status: 'all',
+        startDate: null,
+        endDate: null,
+    });
+
+    const { data, isError, isLoading, error, isFetching, isPending } = useOrders(page, filters, !serverError);
     const user = usePage().props.auth.user;
-    // console.log(data);
+
+    // Reset page to 1 when filters change
+    useEffect(() => {
+        setPage(1);
+    }, [filters]);
 
     if (isLoading || isFetching || isPending) {
         return (
@@ -33,19 +45,45 @@ export default function Orders() {
                     <Skeleton count={10} height={30} />
                 </div>
             </AuthenticatedLayout>
-        )
+        );
     }
+
+    if (serverError) {
+        return (
+            <AuthenticatedLayout>
+                <Head title="Παραγγελίες" />
+                <div className="m-10">
+                    <Message message={serverError as string} type="error" />
+                </div>
+            </AuthenticatedLayout>
+        );
+    }
+
+    const handleApplyFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setFilters({
+            status,
+            // @ts-ignore
+            startDate,
+            // @ts-ignore
+            endDate,
+        });
+    };
 
     return (
         <AuthenticatedLayout>
             <Head title="Παραγγελίες" />
             <div className="m-10">
-                {/* @ts-ignore */}
-                {isError && error ? <Message message={error.message} type="error" /> : null}
-                <div className='grid grid-cols-1 lg:grid-cols-5 mb-10 gap-5'>
+                <div className='grid grid-cols-1 lg:grid-cols-5 mb-10 gap-5 items-end'>
                     <div className='filter-input__container flex flex-col gap-2'>
                         <label htmlFor="order-status" className='text-sm'>Κατάσταση Παραγγελίας</label>
-                        <select name="order-status" id="order-status" className='cursor-pointer text-sm border !border-gray-100 rounded-md'>
+                        <select
+                            name="order-status"
+                            id="order-status"
+                            className='cursor-pointer text-sm border !border-gray-100 rounded-md'
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                        >
                             <option value="all">Όλες</option>
                             {Object.entries(ORDER_STATUSES).map(([key, value]) => (
                                 <option key={key} value={key}>{value}</option>
@@ -63,14 +101,22 @@ export default function Orders() {
                             endDate={endDate || undefined}
                             onChange={(update: [Date | null, Date | null]) => {
                                 setDateRange(update);
-                                console.log(update)
                             }}
                             withPortal
                         />
                     </div>
+                    <div>
+                        <button
+                            onClick={handleApplyFilters}
+                            className="bg-theme-secondary text-white text-sm px-4 py-0 h-[38px] inline-flex items-center rounded-md"
+                        >
+                            Εφαρμογή
+                        </button>
+                    </div>
                 </div>
-                <OrdersList orders={data.orders} user={user} />
-                {data.total_pages > 1 ? (
+                {isError && error ? <Message message={error.message} type="error" /> : null}
+                {data && data.orders && <OrdersList orders={data.orders} user={user} />}
+                {data && data.total_pages > 1 ? (
                     <div className='flex gap-2 mt-10'>
                         {Array.from({ length: data.total_pages }, (_, i) => (
                             <button
