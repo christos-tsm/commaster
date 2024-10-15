@@ -107,7 +107,7 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
             <div className="m-10">
                 <div className='flex justify-between items-center'>
                     <div className='flex items-center gap-2'>
-                        <Link href={route('orders')} className='flex items-center gap-2 inline-flex items-center px-4 py-2 bg-theme-primary hover:bg-theme-primary-darken border border-transparent rounded-md font-medium text-xs text-white transition ease-in-out duration-150 undefined '>
+                        <Link href={route('orders')} className='gap-2 inline-flex items-center px-4 py-2 bg-theme-primary hover:bg-theme-primary-darken border border-transparent rounded-md font-medium text-xs text-white transition ease-in-out duration-150 '>
                             <MoveLeft width={20} height={20} />
                         </Link>
                         <h1 className='p-4 font-semibold text-base'>
@@ -117,7 +117,7 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
                     <div className='flex gap-2'>
                         {isEditMode ? (
                             <>
-                                <PrimaryButton onClick={handleSingleOrderUpdate} className='bg-theme-secondary hover:bg-theme-secondary-darken'>
+                                <PrimaryButton onClick={handleSingleOrderUpdate} disabled={isPending} className='bg-theme-secondary hover:bg-theme-secondary-darken'>
                                     {isPending ? 'Αποθήκευση...' : 'Αποθήκευση'}
                                 </PrimaryButton>
                                 <SecondaryButton onClick={() => setIsEditMode(false)}>Ακύρωση</SecondaryButton>
