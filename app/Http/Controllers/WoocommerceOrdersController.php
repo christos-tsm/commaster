@@ -38,11 +38,11 @@ class WoocommerceOrdersController extends Controller {
             $consumerKey = Crypt::decryptString($encryptedConsumerKey);
             $consumerSecret = Crypt::decryptString($encryptedConsumerSecret);
             // Log the values for debugging
-            Log::info('Encrypted Consumer Key: ' . $encryptedConsumerKey);
-            Log::info('Encrypted Consumer Secret: ' . $encryptedConsumerSecret);
-            Log::info('Decrypted Consumer Key: ' . $consumerKey);
-            Log::info('Decrypted Consumer Secret: ' . $consumerSecret);
-            Log::info('User URL: ' . $storeUrl);
+            // Log::info('Encrypted Consumer Key: ' . $encryptedConsumerKey);
+            // Log::info('Encrypted Consumer Secret: ' . $encryptedConsumerSecret);
+            // Log::info('Decrypted Consumer Key: ' . $consumerKey);
+            // Log::info('Decrypted Consumer Secret: ' . $consumerSecret);
+            // Log::info('User URL: ' . $storeUrl);
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             Log::error('Decryption failed for user: ' . $user->id);
             Log::error('Error: ' . $e->getMessage());
