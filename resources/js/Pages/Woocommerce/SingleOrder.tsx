@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
-import { Order } from '@/types/woocommerce';
 import { Head, Link } from '@inertiajs/react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { MoveLeft } from 'lucide-react';
+import toast from 'react-hot-toast';
+import Skeleton from 'react-loading-skeleton';
+
+import { Order } from '@/types/woocommerce';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import SecondaryButton from '@/Components/SecondaryButton';
 import PrimaryButton from '@/Components/PrimaryButton';
 import OrderItemDetails from '@/Components/Woocommerce/Orders/OrderItemDetails';
 import TextInput from '@/Components/TextInput';
-import Skeleton from 'react-loading-skeleton';
 import Message from '@/Components/Message';
+import { useUpdateOrder } from '@/hooks/useUpdateOrder';
+import { ORDER_STATUSES } from '@/helpers/order-statuses';
 
 interface OrderDetailProps {
     order: Order;
 }
 
-// Strictly define the sections as either 'billing' or 'shipping'
 type Section = 'billing' | 'shipping';
-
-// Define the fields that can be updated
 type BillingShippingField = 'first_name' | 'last_name' | 'address_1' | 'address_2' | 'city' | 'postcode' | 'phone' | 'email';
 
 const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
     const [isEditMode, setIsEditMode] = useState(false);
     const [singleOrderData, setSingleOrderData] = useState(order);
+    const { mutate: updateOrder, isPending } = useUpdateOrder();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -36,6 +38,35 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
                 [fieldName]: value,
             },
         }));
+    };
+
+    const handleSingleOrderUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        const payload = {
+            id: singleOrderData.id,
+            billing: singleOrderData.billing,
+            shipping: singleOrderData.shipping,
+            line_items: singleOrderData.line_items,
+            shipping_lines: singleOrderData.shipping_lines,
+            status: singleOrderData.status, // Include the updated status
+            total: singleOrderData.total, // Include the total and tax information
+            total_tax: singleOrderData.total_tax,
+            currency: singleOrderData.currency,
+            payment_method: singleOrderData.payment_method,
+            payment_method_title: singleOrderData.payment_method_title,
+        };
+        console.log(singleOrderData.status);
+
+        updateOrder(payload, {
+            onSuccess: () => {
+                setIsEditMode(false); // Disable edit mode after successful update
+                toast.success('Η παραγγελία ανανεώθηκε επιτυχώς');
+            },
+            onError: (error) => {
+                console.error('Error updating order:', error);
+                toast.error('Υπήρξε σφαλμα κατά την ανανεωση της παραγγελίας, δοκιμάστε ξανά αργότερα');
+            },
+        });
     };
 
     // Greek translations for the labels
@@ -57,7 +88,7 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
                     <Skeleton count={15} />
                 </div>
             </AuthenticatedLayout>
-        )
+        );
     }
 
     if (order.error) {
@@ -67,7 +98,7 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
                     <Message type='error' message={order.error} />
                 </div>
             </AuthenticatedLayout>
-        )
+        );
     }
 
     return (
@@ -76,11 +107,9 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
             <div className="m-10">
                 <div className='flex justify-between items-center'>
                     <div className='flex items-center gap-2'>
-                        <PrimaryButton>
-                            <Link href={route('orders')} className='flex items-center gap-2'>
-                                <MoveLeft width={20} height={20} />
-                            </Link>
-                        </PrimaryButton>
+                        <Link href={route('orders')} className='flex items-center gap-2 inline-flex items-center px-4 py-2 bg-theme-primary hover:bg-theme-primary-darken border border-transparent rounded-md font-medium text-xs text-white transition ease-in-out duration-150 undefined '>
+                            <MoveLeft width={20} height={20} />
+                        </Link>
                         <h1 className='p-4 font-semibold text-base'>
                             Παραγγελία {order.id} - {order.billing.first_name} {order.billing.last_name}
                         </h1>
@@ -88,13 +117,35 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
                     <div className='flex gap-2'>
                         {isEditMode ? (
                             <>
-                                <PrimaryButton onClick={() => setIsEditMode(false)} className='bg-theme-secondary hover:bg-theme-secondary-darken'>Αποθήκευση</PrimaryButton>
+                                <PrimaryButton onClick={handleSingleOrderUpdate} className='bg-theme-secondary hover:bg-theme-secondary-darken'>
+                                    {isPending ? 'Αποθήκευση...' : 'Αποθήκευση'}
+                                </PrimaryButton>
                                 <SecondaryButton onClick={() => setIsEditMode(false)}>Ακύρωση</SecondaryButton>
                             </>
                         ) : (
                             <PrimaryButton onClick={() => setIsEditMode(true)}>Επεξεργασία παραγγελίας</PrimaryButton>
                         )}
                     </div>
+                </div>
+
+                {/* Order Status Selection */}
+                <div className='single-order__billing-details mt-10'>
+                    <h2 className="font-semibold text-lg mb-5 flex items-center gap-5">Κατάσταση παραγγελίας  <span className="h-[1px] bg-gray-300 flex-1"></span></h2>
+                    <select
+                        name="order-status"
+                        id="order-status"
+                        className='cursor-pointer text-sm border !border-gray-100 rounded-md w-full'
+                        value={singleOrderData.status} // Use state value
+                        onChange={(e) => setSingleOrderData((prevData) => ({
+                            ...prevData,
+                            status: e.target.value, // Update the status in state
+                        }))}
+                        disabled={isPending || !isEditMode} // Disable when not in edit mode
+                    >
+                        {Object.entries(ORDER_STATUSES).map(([key, value]) => (
+                            <option key={key} value={key}>{value}</option>
+                        ))}
+                    </select>
                 </div>
 
                 {/* Billing Details Section */}
@@ -142,6 +193,13 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
                                 />
                             </div>
                         ))}
+                    </div>
+                </div>
+
+                <div className='single-order__billing-details mt-10'>
+                    <h2 className="font-semibold text-lg mb-5 flex items-center gap-5">Σημειώσεις Παραγγελίας  <span className="h-[1px] bg-gray-300 flex-1"></span></h2>
+                    <div>
+                        {order.customer_note ? order.customer_note : '-'}
                     </div>
                 </div>
 

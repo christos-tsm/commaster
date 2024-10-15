@@ -125,7 +125,6 @@ class WoocommerceOrdersController extends Controller {
     }
 
     public function show(Request $request, $id) {
-        Log::info('Endpoint hit');
         $user = $request->user();
         $storeUrl = $user->website_url;
 
@@ -158,6 +157,64 @@ class WoocommerceOrdersController extends Controller {
         } catch (\Exception $e) {
             Log::error('Failed to fetch order: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Failed to fetch order from WooCommerce.']);
+        }
+    }
+
+    public function update(Request $request, $id) {
+        $user = $request->user();
+        $storeUrl = $user->website_url;
+
+        try {
+            $consumerKey = Crypt::decryptString($user->woocommerce_consumer_key);
+            $consumerSecret = Crypt::decryptString($user->woocommerce_consumer_secret);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['error' => 'Failed to decrypt WooCommerce API keys'], 403);
+        }
+
+        // Get the existing order from WooCommerce
+        try {
+            $woocommerce = new \Automattic\WooCommerce\Client(
+                $storeUrl,
+                $consumerKey,
+                $consumerSecret,
+                ['version' => 'wc/v3']
+            );
+
+            // Start building the payload by checking for updated fields in the request
+            $updateData = [];
+
+            // Only update billing if it's present in the request
+            if ($request->has('billing')) {
+                $updateData['billing'] = array_map(function ($value) {
+                    return $value === null ? '' : $value;
+                }, $request->input('billing', []));
+            }
+
+            // Only update shipping if it's present in the request
+            if ($request->has('shipping')) {
+                $updateData['shipping'] = array_map(function ($value) {
+                    return $value === null ? '' : $value;
+                }, $request->input('shipping', []));
+            }
+
+            // Any other fields you want to update, we can add similar conditions for
+            if ($request->has('status')) {
+                $updateData['status'] = $request->input('status');
+            }
+
+            // Send the update payload to WooCommerce
+            $updatedOrder = $woocommerce->put("orders/{$id}", $updateData);
+
+            // Log the WooCommerce response for debugging
+            // Log::info('WooCommerce update response: ', (array) $updatedOrder);
+
+            return response()->json($updatedOrder);
+        } catch (\Exception $e) {
+            // Log the error if the update fails
+            Log::error('Failed to update order: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return response()->json(['error' => 'Failed to update order in WooCommerce'], 500);
         }
     }
 }

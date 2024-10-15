@@ -1,10 +1,10 @@
 export const ORDER_STATUSES: Record<string, string> = {
-    'pending': 'Pending',
-    'processing': 'Processing',
-    'on-hold': 'On Hold',
-    'completed': 'Completed',
-    'cancelled': 'Cancelled',
-    'refunded': 'Refunded',
-    'failed': 'Failed',
-    'trash': 'Trash',
+    'pending': 'Σε εκκρεμότητα',
+    'processing': 'Σε επεξεργασία',
+    'on-hold': 'Σε αναμονή',
+    'completed': 'Ολοκληρωμένη',
+    'cancelled': 'Ακυρωμένη',
+    'refunded': 'Επιστροφή χρημάτων',
+    'failed': 'Απέτυχε',
+    'trash': 'Διεγραμμένη'
 }

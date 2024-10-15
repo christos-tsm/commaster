@@ -27,8 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/woocommerce-details', [WoocommerceController::class, 'updateWoocommerceDetails'])->name('woocommerce.update');
     Route::get('/orders', [WoocommerceOrdersController::class, 'index'])->name('orders');
     // Orders Routes
-    Route::get('/fetch-orders', [WoocommerceOrdersController::class, 'fetchOrders'])->name('orders.fetch');
-    Route::get('/orders/{id}', [WoocommerceOrdersController::class, 'show'])->name('orders.show');
+    Route::get('/fetch-orders', [WoocommerceOrdersController::class, 'fetchOrders'])->name('orders.fetch'); // Fetch Orders
+    Route::get('/orders/{id}', [WoocommerceOrdersController::class, 'show'])->name('orders.show'); // Show Order
+    Route::put('/orders/{id}', [WoocommerceOrdersController::class, 'update'])->name('orders.update'); // Update Order
 });
 
 require __DIR__ . '/auth.php';
