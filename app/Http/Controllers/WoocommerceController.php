@@ -22,6 +22,9 @@ class WoocommerceController extends Controller {
             $websiteUrl = 'https://' . $websiteUrl;
         }
 
+        // Remove the trailing slash from the website URL if it exists
+        $websiteUrl = rtrim($websiteUrl, '/');
+
         // Encrypt the API keys
         $encryptedConsumerKey = Crypt::encryptString($validated['woocommerce_consumer_key']);
         $encryptedConsumerSecret = Crypt::encryptString($validated['woocommerce_consumer_secret']);

@@ -7,6 +7,8 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import PrimaryButton from '@/Components/PrimaryButton';
 import OrderItemDetails from '@/Components/Woocommerce/Orders/OrderItemDetails';
 import TextInput from '@/Components/TextInput';
+import Skeleton from 'react-loading-skeleton';
+import Message from '@/Components/Message';
 
 interface OrderDetailProps {
     order: Order;
@@ -48,9 +50,29 @@ const SingleOrder: React.FC<OrderDetailProps> = ({ order }) => {
         email: 'Email',
     };
 
+    if (!order) {
+        return (
+            <AuthenticatedLayout>
+                <div className="mt-10">
+                    <Skeleton count={15} />
+                </div>
+            </AuthenticatedLayout>
+        )
+    }
+
+    if (order.error) {
+        return (
+            <AuthenticatedLayout>
+                <div className="mt-10">
+                    <Message type='error' message={order.error} />
+                </div>
+            </AuthenticatedLayout>
+        )
+    }
+
     return (
         <AuthenticatedLayout>
-            <Head title={`Παραγγελία ${order.id} - ${order.billing.first_name} ${order.billing.last_name}`} />
+            <Head title={`Παραγγελία ${order?.id} - ${order?.billing?.first_name} ${order?.billing?.last_name}`} />
             <div className="m-10">
                 <div className='flex justify-between items-center'>
                     <div className='flex items-center gap-2'>

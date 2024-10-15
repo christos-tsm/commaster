@@ -125,6 +125,7 @@ class WoocommerceOrdersController extends Controller {
     }
 
     public function show(Request $request, $id) {
+        Log::info('Endpoint hit');
         $user = $request->user();
         $storeUrl = $user->website_url;
 

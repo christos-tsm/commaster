@@ -45,7 +45,7 @@ class WooCommerceService {
         }
 
         try {
-            return $this->woocommerce->get('/orders/' . $id);
+            return $this->woocommerce->get('orders/' . $id);
         } catch (HttpClientException $e) {
             return ['error' => $e->getMessage()];
         }

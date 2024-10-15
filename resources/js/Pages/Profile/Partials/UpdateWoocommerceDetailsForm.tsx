@@ -20,6 +20,13 @@ export default function UpdateWoocommerceDetailsForm({ className = '' }: { class
 
     const updateWoocommerceDetails: FormEventHandler = (e) => {
         e.preventDefault();
+        // Trim any trailing slash from the website URL
+        let sanitizedUrl = data.website_url.trim();
+        if (sanitizedUrl.endsWith('/')) {
+            sanitizedUrl = sanitizedUrl.slice(0, -1); // Remove the trailing slash
+        }
+        // Set the sanitized URL back to the form data
+        setData('website_url', sanitizedUrl);
         put(route('woocommerce.update'), {
             preserveScroll: true,
             onSuccess: () => {
