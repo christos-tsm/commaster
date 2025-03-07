@@ -1,5 +1,3 @@
-// Orders.jsx
-
 import "react-datepicker/dist/react-datepicker.css";
 import React, { useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';

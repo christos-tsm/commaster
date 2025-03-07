@@ -65,13 +65,30 @@ const OrderItem: React.FC<OrderItemInterface> = ({ order, website_url }) => {
                                 {order.shipping.address_2 && <li><strong>Διεύθυνση 2:</strong> {order.shipping.address_2}</li>}
                                 {order.shipping.company && <li><strong>Εταιρεία:</strong> {order.shipping.company}</li>}
                                 <li><strong>Όνομα:</strong> {order.shipping.first_name && order.shipping.last_name ? order.shipping.first_name + ' ' + order.shipping.last_name : '-'}</li>
-                                <li><strong>Τηλέφωνο:</strong> {order.shipping.phone ? order.shipping.phone : '-'}</li>
+                                <li><strong>Τηλέφωνο:</strong> {order.shipping.phone ? <a href={`tel:${order.shipping.phone}`} className='text-theme-secondary font-semibold underline'>{order.shipping.phone}</a> : '-'}</li>
                             </ul>
                         </div>
                         <div className="order-notes flex flex-col gap-2">
                             <h3 className='font-bold uppercase border-b border-b-gray-400'>Σημείωσεις</h3>
                             {order.customer_note ? <p>{order.customer_note}</p> : <p>Δεν υπάρχουν σημειώσεις</p>}
                         </div>
+                        <div className='flex gap-10'>
+                            <div className='flex-1 delivery-type flex flex-col gap-2'>
+                                <h3 className='font-bold uppercase border-b border-b-gray-400'>Τρόπος παράδοσης</h3>
+                                <p>{order.payment_method} | {order.payment_method_title}</p>
+                            </div>
+                            <div className='flex-1 customer-tech-details flex flex-col gap-2'>
+                                <h3 className='font-bold uppercase border-b border-b-gray-400'>IP παραγγελίας</h3>
+                                <p>{order.customer_ip_address}</p>
+                                <p>{order.customer_user_agent}</p>
+                            </div>
+                        </div>
+                        {order.status === 'completed' && order.date_completed ?
+                            <div className='flex flex-col gap-2'>
+                                <h3 className='font-bold uppercase border-b border-b-gray-400'>Ημερομηνία ολοκληρωσης παραγγελίας</h3>
+                                <p>{format(new Date(order.date_completed), 'dd/MM/yyyy HH:mm:ss')}</p>
+                            </div>
+                            : null}
                     </div>
                 </div>
             </div>
