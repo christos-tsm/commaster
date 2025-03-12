@@ -38,7 +38,7 @@ export default function Authenticated({ children }: PropsWithChildren<{ header?:
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink href={route('dashboard')} active={route().current('products')}>
+                            <NavLink href={route('products')} active={route().current('products')}>
                                 <PackageSearch strokeWidth={1.2} />
                                 Προϊόντα
                             </NavLink>

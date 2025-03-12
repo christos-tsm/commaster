@@ -1,22 +1,28 @@
 import React from 'react'
 
-const OrdersTableHeader = () => {
+const ProductsTableHeader = () => {
     return (
-        <div className='hidden md:grid md:grid-cols-6 gap-x-4'>
+        <div className='hidden md:grid md:grid-cols-8 gap-x-4'>
             <div className="p-4 text-sm font-semibold">
                 ID / Αναγνωριστικό
             </div>
             <div className="p-4 text-sm font-semibold">
-                Ημερομηνία
+                Όνομα
             </div>
             <div className="p-4 text-sm font-semibold">
-                Πελάτης
+                Εικόνα
             </div>
             <div className="p-4 text-sm font-semibold">
-                Συνολικό Ποσό / Φόρος
+                Ημ/νία Καταχώρησης
             </div>
             <div className="p-4 text-sm font-semibold">
-                Κατάσταση
+                Τιμή
+            </div>
+            <div className="p-4 text-sm font-semibold">
+                Απόθεμα
+            </div>
+            <div className="p-4 text-sm font-semibold">
+                Κατηγορίες
             </div>
             <div className="p-4 text-sm font-semibold text-right">
                 Περισσότερα
@@ -25,4 +31,4 @@ const OrdersTableHeader = () => {
     )
 }
 
-export default OrdersTableHeader
+export default ProductsTableHeader

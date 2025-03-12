@@ -50,4 +50,18 @@ class WooCommerceService {
             return ['error' => $e->getMessage()];
         }
     }
+
+    public function getProducts() {
+        if (!$this->woocommerce) {
+            throw new \Exception('WooCommerce client not initialized.');
+        }
+
+        try {
+            // Fetch products using the WooCommerce client
+            return $this->woocommerce->get('products');
+        } catch (HttpClientException $e) {
+            // Handle errors
+            return ['error' => $e->getMessage()];
+        }
+    }
 }
